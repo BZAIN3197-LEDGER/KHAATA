@@ -1,0 +1,1949 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KHAATA - AI Budget Planner</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f7fb;
+    color: #172033;
+}
+
+.container {
+    max-width: 1050px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.header {
+    margin-bottom: 25px;
+}
+
+.logo {
+    font-size: 36px;
+    font-weight: 800;
+}
+
+.subtitle {
+    color: #667085;
+    margin-top: 8px;
+    font-size: 16px;
+}
+
+.card {
+    background: white;
+    border-radius: 18px;
+    padding: 28px;
+    margin-bottom: 22px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+}
+
+h2 {
+    margin-top: 0;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.full {
+    grid-column: 1 / -1;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+label {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.required {
+    color: #ef4444;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    background: white;
+    font-size: 15px;
+    font-family: inherit;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #635bff;
+    box-shadow: 0 0 0 3px rgba(99,91,255,0.12);
+}
+
+.ai-box {
+    margin-top: 20px;
+    padding: 18px;
+    border-radius: 14px;
+    background: #f2f1ff;
+    border: 1px solid #d9d6ff;
+}
+
+.ai-title {
+    font-weight: 800;
+    margin-bottom: 7px;
+}
+
+.small {
+    font-size: 13px;
+    color: #667085;
+    line-height: 1.5;
+}
+
+.family-title {
+    margin-top: 30px;
+    margin-bottom: 5px;
+}
+
+.family-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.button {
+    width: 100%;
+    margin-top: 22px;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: #635bff;
+    color: white;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.button:hover {
+    background: #5148e5;
+}
+
+.button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.loading {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #635bff;
+    font-weight: 700;
+}
+
+.spinner {
+    width: 22px;
+    height: 22px;
+    border: 3px solid #ddd9ff;
+    border-top-color: #635bff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.error {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 12px;
+    background: #fff1f2;
+    color: #991b1b;
+    border: 1px solid #fecdd3;
+    white-space: pre-wrap;
+}
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.total {
+    font-size: 34px;
+    font-weight: 900;
+}
+
+.currency {
+    color: #667085;
+    text-align: right;
+    font-weight: 700;
+}
+
+.metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.metric {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 15px;
+}
+
+.metric-label {
+    font-size: 12px;
+    color: #667085;
+    margin-bottom: 5px;
+}
+
+.metric-value {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.categories {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.category {
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 18px;
+    background: #fafafa;
+}
+
+.category-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.category-name {
+    font-weight: 800;
+}
+
+.percentage {
+    color: #635bff;
+    font-weight: 800;
+}
+
+.amount {
+    font-size: 23px;
+    font-weight: 900;
+}
+
+.bar {
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 12px;
+}
+
+.bar-fill {
+    height: 100%;
+    background: #635bff;
+    border-radius: 20px;
+}
+
+.analysis {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 25px;
+}
+
+.analysis-card {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+.analysis-card h3 {
+    margin-top: 0;
+}
+
+.tradeoffs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tradeoff {
+    background: white;
+    border: 1px solid #e5e7eb;
+    padding: 12px;
+    border-radius: 10px;
+}
+
+.sources {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid #e5e7eb;
+    color: #667085;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 700px) {
+
+    .grid,
+    .categories,
+    .analysis {
+        grid-template-columns: 1fr;
+    }
+
+    .family-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .metrics {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .results-header {
+        flex-direction: column;
+    }
+
+    .currency {
+        text-align: left;
+    }
+}
+
+@media (max-width: 450px) {
+
+    .family-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div class="logo">
+            KHAATA
+        </div>
+
+        <div class="subtitle">
+            AI-powered personal budgeting
+        </div>
+
+    </div>
+
+
+    <!-- CREATE BUDGET -->
+
+    <div class="card">
+
+        <h2>
+            Create Your Budget
+        </h2>
+
+        <p class="small">
+            Choose your country, city and budget period.
+            KHAATA will use economic information to
+            create a personalized budget for you.
+        </p>
+
+
+        <div class="grid">
+
+
+            <!-- COUNTRY -->
+
+            <div class="field full">
+
+                <label>
+                    Country
+                    <span class="required">*</span>
+                </label>
+
+                <select id="country">
+
+                    <option value="">
+                        Select your country
+                    </option>
+
+                    <!-- UN MEMBER STATES + PALESTINE + VATICAN CITY -->
+
+                    <option>Afghanistan</option>
+                    <option>Albania</option>
+                    <option>Algeria</option>
+                    <option>Andorra</option>
+                    <option>Angola</option>
+                    <option>Antigua and Barbuda</option>
+                    <option>Argentina</option>
+                    <option>Armenia</option>
+                    <option>Australia</option>
+                    <option>Austria</option>
+                    <option>Azerbaijan</option>
+                    <option>Bahamas</option>
+                    <option>Bahrain</option>
+                    <option>Bangladesh</option>
+                    <option>Barbados</option>
+                    <option>Belarus</option>
+                    <option>Belgium</option>
+                    <option>Belize</option>
+                    <option>Benin</option>
+                    <option>Bhutan</option>
+                    <option>Bolivia</option>
+                    <option>Bosnia and Herzegovina</option>
+                    <option>Botswana</option>
+                    <option>Brazil</option>
+                    <option>Brunei</option>
+                    <option>Bulgaria</option>
+                    <option>Burkina Faso</option>
+                    <option>Burundi</option>
+                    <option>Cabo Verde</option>
+                    <option>Cambodia</option>
+                    <option>Cameroon</option>
+                    <option>Canada</option>
+                    <option>Central African Republic</option>
+                    <option>Chad</option>
+                    <option>Chile</option>
+                    <option>China</option>
+                    <option>Colombia</option>
+                    <option>Comoros</option>
+                    <option>Congo</option>
+                    <option>Costa Rica</option>
+                    <option>Côte d'Ivoire</option>
+                    <option>Croatia</option>
+                    <option>Cuba</option>
+                    <option>Cyprus</option>
+                    <option>Czechia</option>
+                    <option>Democratic Republic of the Congo</option>
+                    <option>Denmark</option>
+                    <option>Djibouti</option>
+                    <option>Dominica</option>
+                    <option>Dominican Republic</option>
+                    <option>Ecuador</option>
+                    <option>Egypt</option>
+                    <option>El Salvador</option>
+                    <option>Equatorial Guinea</option>
+                    <option>Eritrea</option>
+                    <option>Estonia</option>
+                    <option>Eswatini</option>
+                    <option>Ethiopia</option>
+                    <option>Fiji</option>
+                    <option>Finland</option>
+                    <option>France</option>
+                    <option>Gabon</option>
+                    <option>Gambia</option>
+                    <option>Georgia</option>
+                    <option>Germany</option>
+                    <option>Ghana</option>
+                    <option>Greece</option>
+                    <option>Grenada</option>
+                    <option>Guatemala</option>
+                    <option>Guinea</option>
+                    <option>Guinea-Bissau</option>
+                    <option>Guyana</option>
+                    <option>Haiti</option>
+                    <option>Honduras</option>
+                    <option>Hungary</option>
+                    <option>Iceland</option>
+                    <option>India</option>
+                    <option>Indonesia</option>
+                    <option>Iran</option>
+                    <option>Iraq</option>
+                    <option>Ireland</option>
+                    <option>Israel</option>
+                    <option>Italy</option>
+                    <option>Jamaica</option>
+                    <option>Japan</option>
+                    <option>Jordan</option>
+                    <option>Kazakhstan</option>
+                    <option>Kenya</option>
+                    <option>Kiribati</option>
+                    <option>Kuwait</option>
+                    <option>Kyrgyzstan</option>
+                    <option>Laos</option>
+                    <option>Latvia</option>
+                    <option>Lebanon</option>
+                    <option>Lesotho</option>
+                    <option>Liberia</option>
+                    <option>Libya</option>
+                    <option>Liechtenstein</option>
+                    <option>Lithuania</option>
+                    <option>Luxembourg</option>
+                    <option>Madagascar</option>
+                    <option>Malawi</option>
+                    <option>Malaysia</option>
+                    <option>Maldives</option>
+                    <option>Mali</option>
+                    <option>Malta</option>
+                    <option>Marshall Islands</option>
+                    <option>Mauritania</option>
+                    <option>Mauritius</option>
+                    <option>Mexico</option>
+                    <option>Micronesia</option>
+                    <option>Moldova</option>
+                    <option>Monaco</option>
+                    <option>Mongolia</option>
+                    <option>Montenegro</option>
+                    <option>Morocco</option>
+                    <option>Mozambique</option>
+                    <option>Myanmar</option>
+                    <option>Namibia</option>
+                    <option>Nauru</option>
+                    <option>Nepal</option>
+                    <option>Netherlands</option>
+                    <option>New Zealand</option>
+                    <option>Nicaragua</option>
+                    <option>Niger</option>
+                    <option>Nigeria</option>
+                    <option>North Korea</option>
+                    <option>North Macedonia</option>
+                    <option>Norway</option>
+                    <option>Oman</option>
+                    <option>Pakistan</option>
+                    <option>Palau</option>
+                    <option>Palestine</option>
+                    <option>Panama</option>
+                    <option>Papua New Guinea</option>
+                    <option>Paraguay</option>
+                    <option>Peru</option>
+                    <option>Philippines</option>
+                    <option>Poland</option>
+                    <option>Portugal</option>
+                    <option>Qatar</option>
+                    <option>Romania</option>
+                    <option>Russia</option>
+                    <option>Rwanda</option>
+                    <option>Saint Kitts and Nevis</option>
+                    <option>Saint Lucia</option>
+                    <option>Saint Vincent and the Grenadines</option>
+                    <option>Samoa</option>
+                    <option>San Marino</option>
+                    <option>Sao Tome and Principe</option>
+                    <option>Saudi Arabia</option>
+                    <option>Senegal</option>
+                    <option>Serbia</option>
+                    <option>Seychelles</option>
+                    <option>Sierra Leone</option>
+                    <option>Singapore</option>
+                    <option>Slovakia</option>
+                    <option>Slovenia</option>
+                    <option>Solomon Islands</option>
+                    <option>Somalia</option>
+                    <option>South Africa</option>
+                    <option>South Korea</option>
+                    <option>South Sudan</option>
+                    <option>Spain</option>
+                    <option>Sri Lanka</option>
+                    <option>Sudan</option>
+                    <option>Suriname</option>
+                    <option>Sweden</option>
+                    <option>Switzerland</option>
+                    <option>Syria</option>
+                    <option>Tajikistan</option>
+                    <option>Tanzania</option>
+                    <option>Thailand</option>
+                    <option>Timor-Leste</option>
+                    <option>Togo</option>
+                    <option>Tonga</option>
+                    <option>Trinidad and Tobago</option>
+                    <option>Tunisia</option>
+                    <option>Türkiye</option>
+                    <option>Turkmenistan</option>
+                    <option>Tuvalu</option>
+                    <option>Uganda</option>
+                    <option>Ukraine</option>
+                    <option>United Arab Emirates</option>
+                    <option>United Kingdom</option>
+                    <option>United States</option>
+                    <option>Uruguay</option>
+                    <option>Uzbekistan</option>
+                    <option>Vanuatu</option>
+                    <option>Vatican City</option>
+                    <option>Venezuela</option>
+                    <option>Vietnam</option>
+                    <option>Yemen</option>
+                    <option>Zambia</option>
+                    <option>Zimbabwe</option>
+
+                </select>
+
+            </div>
+
+
+            <!-- CITY -->
+
+            <div
+                class="field full hidden"
+                id="cityField"
+            >
+
+                <label>
+                    City
+                    <span class="required">*</span>
+                </label>
+
+                <select id="city">
+
+                    <option value="">
+                        Select your city
+                    </option>
+
+                </select>
+
+                <div class="small" id="cityLoading">
+                    Loading cities...
+                </div>
+
+            </div>
+
+
+            <!-- START DATE -->
+
+            <div class="field">
+
+                <label>
+                    Start Date
+                </label>
+
+                <input
+                    type="date"
+                    id="start"
+                >
+
+            </div>
+
+
+            <!-- END DATE -->
+
+            <div class="field">
+
+                <label>
+                    End Date
+                </label>
+
+                <input
+                    type="date"
+                    id="end"
+                >
+
+            </div>
+
+
+            <!-- MONEY -->
+
+            <div class="field full">
+
+                <label>
+                    Money
+                </label>
+
+                <input
+                    type="number"
+                    id="income"
+                    min="0"
+                    placeholder="Example: 100000"
+                >
+
+                <div class="small">
+                    Enter the amount of money available for this budget period.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FAMILY MEMBERS -->
+
+        <h3 class="family-title">
+            👨‍👩‍👧‍👦 Family Members
+        </h3>
+
+        <p class="small">
+            Enter how many people in each age group will be included in this budget.
+        </p>
+
+
+        <div class="family-grid">
+
+
+            <div class="field">
+
+                <label>
+                    Infants
+                </label>
+
+                <input
+                    type="number"
+                    id="infants"
+                    min="0"
+                    value="0"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Toddlers
+                </label>
+
+                <input
+                    type="number"
+                    id="toddlers"
+                    min="0"
+                    value="0"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Kids
+                </label>
+
+                <input
+                    type="number"
+                    id="kids"
+                    min="0"
+                    value="0"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Teenagers
+                </label>
+
+                <input
+                    type="number"
+                    id="teenagers"
+                    min="0"
+                    value="0"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Adults
+                </label>
+
+                <input
+                    type="number"
+                    id="adults"
+                    min="0"
+                    value="1"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Older Adults
+                </label>
+
+                <input
+                    type="number"
+                    id="olderAdults"
+                    min="0"
+                    value="0"
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- SUGGESTION BOX -->
+
+        <div
+            class="field full"
+            style="margin-top:25px;"
+        >
+
+            <label>
+                💬 Suggestion Box
+            </label>
+
+            <textarea
+                id="suggestion"
+                placeholder="Tell KHAATA anything important about your budget, lifestyle, goals, or spending preferences..."
+            ></textarea>
+
+            <div class="small">
+                Optional. KHAATA AI can use this information when creating your budget.
+            </div>
+
+        </div>
+
+
+        <div class="ai-box">
+
+            <div class="ai-title">
+                🤖 KHAATA AI
+            </div>
+
+            <div class="small">
+
+                KHAATA will analyze economic conditions,
+                your location, family structure, available
+                money and preferences to create a personalized budget.
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="button"
+            id="analyzeButton"
+            onclick="analyzeBudget()"
+        >
+
+            Analyze Country & Create Budget
+
+        </button>
+
+
+        <div
+            id="loading"
+            class="loading hidden"
+        >
+
+            <div class="spinner"></div>
+
+            <div id="loadingText">
+                Analyzing...
+            </div>
+
+        </div>
+
+
+        <div
+            id="error"
+            class="error hidden"
+        ></div>
+
+    </div>
+
+
+    <!-- RESULTS -->
+
+    <div
+        id="results"
+        class="card hidden"
+    >
+
+        <div class="results-header">
+
+            <div>
+
+                <h2 id="resultCountry">
+                    Country
+                </h2>
+
+                <div class="small">
+                    AI-generated budget
+                </div>
+
+            </div>
+
+
+            <div>
+
+                <div
+                    id="resultTotal"
+                    class="total"
+                >
+                    0
+                </div>
+
+                <div
+                    id="resultCurrency"
+                    class="currency"
+                >
+                    USD
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ECONOMIC METRICS -->
+
+        <div
+            id="metrics"
+            class="metrics"
+        ></div>
+
+
+        <h3 style="margin-top:30px;">
+            Budget Allocation
+        </h3>
+
+
+        <div
+            id="categories"
+            class="categories"
+        ></div>
+
+
+        <!-- ANALYSIS -->
+
+        <div class="analysis">
+
+
+            <div class="analysis-card">
+
+                <h3>
+                    📊 Economic Snapshot
+                </h3>
+
+                <p id="snapshot"></p>
+
+            </div>
+
+
+            <div class="analysis-card">
+
+                <h3>
+                    ⚖️ Economic Trade-offs
+                </h3>
+
+                <div
+                    id="tradeoffs"
+                    class="tradeoffs"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RECOMMENDATION -->
+
+        <div
+            class="analysis-card"
+            style="margin-top:18px;"
+        >
+
+            <h3>
+                💡 Ledger Recommendation
+            </h3>
+
+            <p id="insight"></p>
+
+        </div>
+
+
+        <!-- SOURCES -->
+
+        <div
+            id="sources"
+            class="sources"
+        ></div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+/*
+====================================================
+BUDGET CATEGORIES
+====================================================
+*/
+
+const CATEGORIES = [
+
+    "Food",
+    "Transport",
+    "Housing",
+    "Utilities",
+    "Health",
+    "Schooling / Education",
+    "Entertainment",
+    "Shopping",
+    "Other"
+
+];
+
+
+/*
+====================================================
+CURRENCY SYMBOLS
+====================================================
+*/
+
+const SYMBOLS = {
+
+    PKR: "₨",
+    INR: "₹",
+    USD: "$",
+    GBP: "£",
+    CAD: "C$",
+    AUD: "A$",
+    EUR: "€",
+    TRY: "₺",
+    SAR: "﷼",
+    AED: "د.إ",
+    QAR: "﷼",
+    KWD: "د.ك",
+    BHD: ".د.ب",
+    OMR: "﷼",
+    JPY: "¥",
+    KRW: "₩",
+    CNY: "¥",
+    SGD: "S$",
+    MYR: "RM",
+    IDR: "Rp",
+    THB: "฿",
+    VND: "₫",
+    PHP: "₱",
+    BRL: "R$",
+    MXN: "$",
+    ARS: "$",
+    CLP: "$",
+    COP: "$",
+    CHF: "CHF",
+    SEK: "kr",
+    NOK: "kr",
+    DKK: "kr",
+    PLN: "zł",
+    RUB: "₽",
+    UAH: "₴",
+    EGP: "£",
+    ZAR: "R",
+    NGN: "₦",
+    KES: "KSh",
+    BDT: "৳",
+    LKR: "Rs",
+    NPR: "Rs"
+
+};
+
+
+/*
+====================================================
+FORMAT NUMBER
+====================================================
+*/
+
+function formatNumber(number) {
+
+    return Number(number).toLocaleString(
+        undefined,
+        {
+            maximumFractionDigits: 2
+        }
+    );
+
+}
+
+
+/*
+====================================================
+FORMAT MONEY
+====================================================
+*/
+
+function money(amount, currency) {
+
+    const symbol =
+        SYMBOLS[currency] ||
+        currency;
+
+    return (
+        symbol +
+        " " +
+        formatNumber(amount)
+    );
+
+}
+
+
+/*
+====================================================
+SHOW / HIDE
+====================================================
+*/
+
+function show(id) {
+
+    document
+        .getElementById(id)
+        .classList
+        .remove("hidden");
+
+}
+
+
+function hide(id) {
+
+    document
+        .getElementById(id)
+        .classList
+        .add("hidden");
+
+}
+
+
+/*
+====================================================
+ERROR
+====================================================
+*/
+
+function showError(message) {
+
+    const error =
+        document.getElementById("error");
+
+    error.textContent =
+        message;
+
+    show("error");
+
+}
+
+
+/*
+====================================================
+COUNTRY → CITY
+
+Uses the CountriesNow public country/city database.
+Cities are loaded only after a country is selected.
+====================================================
+*/
+
+const countrySelect =
+    document.getElementById("country");
+
+const cityField =
+    document.getElementById("cityField");
+
+const citySelect =
+    document.getElementById("city");
+
+const cityLoading =
+    document.getElementById("cityLoading");
+
+
+countrySelect.addEventListener(
+    "change",
+    async function () {
+
+        const country =
+            this.value;
+
+        citySelect.innerHTML = `
+            <option value="">
+                Select your city
+            </option>
+        `;
+
+        if (!country) {
+
+            hide("cityField");
+
+            return;
+
+        }
+
+        show("cityField");
+
+        cityLoading.textContent =
+            "Loading cities...";
+
+        cityLoading.style.display =
+            "block";
+
+        try {
+
+            const response =
+                await fetch(
+                    "https://countriesnow.space/api/v0.1/countries"
+                );
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Could not load the city database."
+                );
+
+            }
+
+            const result =
+                await response.json();
+
+            const countryData =
+                result.data.find(
+                    item =>
+                        item.country.toLowerCase() ===
+                        country.toLowerCase()
+                );
+
+            if (
+                !countryData ||
+                !countryData.cities ||
+                countryData.cities.length === 0
+            ) {
+
+                citySelect.innerHTML = `
+                    <option value="">
+                        No city data available
+                    </option>
+                `;
+
+                cityLoading.textContent =
+                    "City data is unavailable for this country.";
+
+                return;
+
+            }
+
+            countryData.cities
+                .sort(
+                    (a, b) =>
+                        a.localeCompare(b)
+                )
+                .forEach(
+                    city => {
+
+                        const option =
+                            document.createElement(
+                                "option"
+                            );
+
+                        option.value =
+                            city;
+
+                        option.textContent =
+                            city;
+
+                        citySelect.appendChild(
+                            option
+                        );
+
+                    }
+                );
+
+            cityLoading.textContent =
+                `${countryData.cities.length.toLocaleString()} cities available.`;
+
+        } catch (error) {
+
+            citySelect.innerHTML = `
+                <option value="">
+                    Unable to load cities
+                </option>
+            `;
+
+            cityLoading.textContent =
+                "Please check your internet connection and try again.";
+
+            console.error(
+                "City loading error:",
+                error
+            );
+
+        }
+
+    }
+);
+
+
+/*
+====================================================
+ANALYZE BUDGET
+====================================================
+*/
+
+async function analyzeBudget() {
+
+    const country =
+        document
+            .getElementById("country")
+            .value;
+
+
+    const city =
+        document
+            .getElementById("city")
+            .value;
+
+
+    const start =
+        document
+            .getElementById("start")
+            .value;
+
+
+    const end =
+        document
+            .getElementById("end")
+            .value;
+
+
+    const income =
+        document
+            .getElementById("income")
+            .value;
+
+
+    /*
+    FAMILY
+    */
+
+    const family = {
+
+        infants:
+            Number(
+                document
+                    .getElementById("infants")
+                    .value
+            ) || 0,
+
+        toddlers:
+            Number(
+                document
+                    .getElementById("toddlers")
+                    .value
+            ) || 0,
+
+        kids:
+            Number(
+                document
+                    .getElementById("kids")
+                    .value
+            ) || 0,
+
+        teenagers:
+            Number(
+                document
+                    .getElementById("teenagers")
+                    .value
+            ) || 0,
+
+        adults:
+            Number(
+                document
+                    .getElementById("adults")
+                    .value
+            ) || 0,
+
+        olderAdults:
+            Number(
+                document
+                    .getElementById("olderAdults")
+                    .value
+            ) || 0
+
+    };
+
+
+    /*
+    SUGGESTION
+    */
+
+    const suggestion =
+        document
+            .getElementById("suggestion")
+            .value
+            .trim();
+
+
+    hide("error");
+    hide("results");
+
+
+    if (!country) {
+
+        showError(
+            "Please select a country."
+        );
+
+        return;
+
+    }
+
+
+    if (!city) {
+
+        showError(
+            "Please select a city."
+        );
+
+        return;
+
+    }
+
+
+    if (!start || !end) {
+
+        showError(
+            "Please select both dates."
+        );
+
+        return;
+
+    }
+
+
+    const startDate =
+        new Date(start);
+
+    const endDate =
+        new Date(end);
+
+
+    if (endDate < startDate) {
+
+        showError(
+            "End date cannot be before start date."
+        );
+
+        return;
+
+    }
+
+
+    const button =
+        document
+            .getElementById("analyzeButton");
+
+
+    button.disabled = true;
+
+
+    show("loading");
+
+
+    document
+        .getElementById("loadingText")
+        .textContent =
+        "Ledger AI is analyzing your budget...";
+
+
+    try {
+
+        /*
+        ==========================================
+        REAL BACKEND CONNECTION
+        ==========================================
+        */
+
+        const response =
+            await fetch(
+                "/api/analyze",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            country:
+                                country,
+
+                            city:
+                                city,
+
+                            start:
+                                start,
+
+                            end:
+                                end,
+
+                            income:
+                                income,
+
+                            money:
+                                income,
+
+                            family:
+                                family,
+
+                            suggestion:
+                                suggestion
+
+                        })
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "The backend could not analyze your budget."
+            );
+
+        }
+
+
+        renderResults(
+            country,
+            city,
+            data
+        );
+
+
+        hide("loading");
+
+        show("results");
+
+
+        window.scrollTo({
+
+            top:
+                document
+                    .getElementById("results")
+                    .offsetTop - 20,
+
+            behavior:
+                "smooth"
+
+        });
+
+
+    } catch (error) {
+
+        hide("loading");
+
+        showError(
+            error.message
+        );
+
+    } finally {
+
+        button.disabled = false;
+
+    }
+
+}
+
+
+/*
+====================================================
+RENDER RESULTS
+====================================================
+*/
+
+function renderResults(
+    country,
+    city,
+    data
+) {
+
+
+    document
+        .getElementById("resultCountry")
+        .textContent =
+        `${city}, ${country}`;
+
+
+    document
+        .getElementById("resultTotal")
+        .textContent =
+        money(
+            data.total,
+            data.currency
+        );
+
+
+    document
+        .getElementById("resultCurrency")
+        .textContent =
+        data.currency;
+
+
+    /*
+    ======================================
+    METRICS
+    ======================================
+    */
+
+    const metrics =
+        document.getElementById(
+            "metrics"
+        );
+
+
+    metrics.innerHTML = "";
+
+
+    const metricData = [
+
+        [
+            "Inflation",
+            data.metrics?.inflation,
+            "%"
+        ],
+
+        [
+            "GDP Growth",
+            data.metrics?.growth,
+            "%"
+        ],
+
+        [
+            "Unemployment",
+            data.metrics?.unemployment,
+            "%"
+        ],
+
+        [
+            "GDP Per Capita",
+            data.metrics?.gdpPerCapita,
+            " USD"
+        ]
+
+    ];
+
+
+    metricData.forEach(
+        metric => {
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.className =
+                "metric";
+
+
+            div.innerHTML = `
+
+                <div class="metric-label">
+                    ${metric[0]}
+                </div>
+
+                <div class="metric-value">
+                    ${formatNumber(
+                        metric[1]
+                    )}${metric[2]}
+                </div>
+
+            `;
+
+
+            metrics.appendChild(
+                div
+            );
+
+        }
+    );
+
+
+    /*
+    ======================================
+    CATEGORIES
+    ======================================
+    */
+
+    const categories =
+        document.getElementById(
+            "categories"
+        );
+
+
+    categories.innerHTML = "";
+
+
+    CATEGORIES.forEach(
+        category => {
+
+            const percentage =
+                Number(
+                    data.categories?.[
+                        category
+                    ] || 0
+                );
+
+
+            const amount =
+                data.total *
+                percentage /
+                100;
+
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.className =
+                "category";
+
+
+            div.innerHTML = `
+
+                <div class="category-top">
+
+                    <div class="category-name">
+                        ${category}
+                    </div>
+
+                    <div class="percentage">
+                        ${percentage}%
+                    </div>
+
+                </div>
+
+                <div class="amount">
+                    ${money(
+                        amount,
+                        data.currency
+                    )}
+                </div>
+
+                <div class="bar">
+
+                    <div
+                        class="bar-fill"
+                        style="width:${percentage}%"
+                    ></div>
+
+                </div>
+
+            `;
+
+
+            categories.appendChild(
+                div
+            );
+
+        }
+    );
+
+
+    /*
+    ======================================
+    ANALYSIS
+    ======================================
+    */
+
+    document
+        .getElementById("snapshot")
+        .textContent =
+        data.economicSnapshot ||
+        "No economic snapshot was provided.";
+
+
+    const tradeoffs =
+        document.getElementById(
+            "tradeoffs"
+        );
+
+
+    tradeoffs.innerHTML = "";
+
+
+    if (
+        Array.isArray(
+            data.tradeOffs
+        )
+    ) {
+
+        data.tradeOffs.forEach(
+            item => {
+
+                const div =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                div.className =
+                    "tradeoff";
+
+
+                div.textContent =
+                    item;
+
+
+                tradeoffs.appendChild(
+                    div
+                );
+
+            }
+        );
+
+    }
+
+
+    document
+        .getElementById("insight")
+        .textContent =
+        data.insight ||
+        "No recommendation was provided.";
+
+
+    document
+        .getElementById("sources")
+        .innerHTML = `
+
+            <strong>Ledger:</strong>
+            AI-powered personalized budgeting.
+
+            <br>
+
+            <strong>Location:</strong>
+            ${city}, ${country}
+
+        `;
+
+}
+
+
+/*
+====================================================
+DEFAULT DATES
+====================================================
+*/
+
+(function setDates() {
+
+    const today =
+        new Date();
+
+
+    const start =
+        new Date();
+
+
+    start.setDate(
+        today.getDate() - 29
+    );
+
+
+    function dateString(date) {
+
+        const year =
+            date.getFullYear();
+
+        const month =
+            String(
+                date.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            );
+
+        const day =
+            String(
+                date.getDate()
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        return (
+            year +
+            "-" +
+            month +
+            "-" +
+            day
+        );
+
+    }
+
+
+    document
+        .getElementById("start")
+        .value =
+        dateString(start);
+
+
+    document
+        .getElementById("end")
+        .value =
+        dateString(today);
+
+})();
+
+</script>
+
+</body>
+</html>
