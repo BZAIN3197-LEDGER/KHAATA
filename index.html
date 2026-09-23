@@ -1022,37 +1022,40 @@
         document.getElementById("cityError");
 
 
-    countrySelect.addEventListener(
+  countrySelect.addEventListener(
     "change",
     async function () {
 
         const country = this.value.trim();
 
-        citySelect.innerHTML = `
-            <option value="">
-                Select your city
-            </option>
-        `;
+        cityField.classList.remove("hidden");
 
         citySelect.disabled = true;
 
-        cityLoading.classList.add("hidden");
+        citySelect.innerHTML = `
+            <option value="">
+                Loading cities...
+            </option>
+        `;
+
+        cityLoading.classList.remove("hidden");
         cityError.classList.add("hidden");
         cityError.textContent = "";
 
-        cityField.classList.add("hidden");
-
         if (!country) {
+
+            cityField.classList.add("hidden");
+
             citySelect.innerHTML = `
                 <option value="">
                     Select a country first
                 </option>
             `;
+
+            cityLoading.classList.add("hidden");
+
             return;
         }
-
-        cityField.classList.remove("hidden");
-        cityLoading.classList.remove("hidden");
 
         try {
 
@@ -1069,26 +1072,15 @@
                 }
             );
 
-            if (!response.ok) {
-                throw new Error(
-                    "City server returned HTTP " +
-                    response.status
-                );
-            }
-
             const data = await response.json();
 
             if (
+                !response.ok ||
                 !data ||
-                data.error ||
                 !Array.isArray(data.data) ||
                 data.data.length === 0
             ) {
-                throw new Error(
-                    "No cities were returned for " +
-                    country +
-                    "."
-                
+                throw new Error("No cities found");
             }
 
             citySelect.innerHTML = `
@@ -1097,38 +1089,34 @@
                 </option>
             `;
 
-            data.data.sort().forEach(
-                function (city) {
+            data.data.forEach(function (city) {
 
-                    const option =
-                        document.createElement("option");
+                const option =
+                    document.createElement("option");
 
-                    option.value = city;
-                    option.textContent = city;
+                option.value = city;
+                option.textContent = city;
 
-                    citySelect.appendChild(option);
-                }
-            
+                citySelect.appendChild(option);
+
+            });
 
             citySelect.disabled = false;
 
         } catch (error) {
 
-            console.error(
-                "CITY API ERROR:",
-                error
-            );
-
-            cityError.textContent =
-                "Unable to load cities right now. Please try again.";
-
-            cityError.classList.remove("hidden");
+            console.error("CITY API ERROR:", error);
 
             citySelect.innerHTML = `
-    <option value="">
-        Select your city
-    </option>
-`;
+                <option value="">
+                    City loading failed
+                </option>
+            `;
+
+            cityError.textContent =
+                "Unable to load cities right now.";
+
+            cityError.classList.remove("hidden");
 
         } finally {
 
@@ -1137,6 +1125,7 @@
         }
 
     }
+);
 );
 
 
