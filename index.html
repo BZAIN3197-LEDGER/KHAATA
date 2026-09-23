@@ -1088,7 +1088,7 @@
                     "No cities were returned for " +
                     country +
                     "."
-                );
+                
             }
 
             citySelect.innerHTML = `
@@ -1108,7 +1108,7 @@
 
                     citySelect.appendChild(option);
                 }
-            );
+            
 
             citySelect.disabled = false;
 
@@ -1129,7 +1129,6 @@
         Select your city
     </option>
 `;
-            `;
 
         } finally {
 
@@ -1527,9 +1526,9 @@
         `;
 
         categories.appendChild(category);
-    });
+    }
 }
-            );
+            
 
         }
 
