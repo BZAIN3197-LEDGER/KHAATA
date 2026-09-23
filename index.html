@@ -15,7 +15,10 @@
         crossorigin="anonymous">
     </script>
 
-    <style>
+   
+                    type="number"
+                    id="adults"
+                    min <style>
 
         * {
             box-sizing: border-box;
@@ -806,10 +809,7 @@
 
             <div class="field">
                 <label for="adults">Adults</label>
-                <input
-                    type="number"
-                    id="adults"
-                    min="0"
+                <input="0"
                     value="0"
                 >
             </div>
@@ -1000,6 +1000,7 @@
 </div>
 
 
+```html
 <script>
 
     /* =========================================
@@ -1022,144 +1023,160 @@
         document.getElementById("cityError");
 
 
-  countrySelect.addEventListener(
-    "change",
-    async function () {
+    countrySelect.addEventListener(
+        "change",
+        async function () {
 
-        const country =
-            this.value.trim();
-
-        cityField.classList.remove("hidden");
-
-        citySelect.disabled = true;
-
-        cityError.classList.add("hidden");
-
-        cityError.textContent = "";
-
-        cityLoading.classList.remove("hidden");
-
-        citySelect.innerHTML = `
-            <option value="">
-                Loading cities...
-            </option>
-        `;
+            const country =
+                this.value.trim();
 
 
-        if (!country) {
+            cityField.classList.remove(
+                "hidden"
+            );
 
-            cityField.classList.add("hidden");
+            citySelect.disabled = true;
 
-            cityLoading.classList.add("hidden");
+            cityError.classList.add(
+                "hidden"
+            );
+
+            cityError.textContent = "";
+
+            cityLoading.classList.remove(
+                "hidden"
+            );
+
 
             citySelect.innerHTML = `
                 <option value="">
-                    Select a country first
+                    Loading cities...
                 </option>
             `;
 
-            return;
-        }
+
+            if (!country) {
+
+                cityField.classList.add(
+                    "hidden"
+                );
+
+                cityLoading.classList.add(
+                    "hidden"
+                );
+
+                citySelect.innerHTML = `
+                    <option value="">
+                        Select a country first
+                    </option>
+                `;
+
+                return;
+            }
 
 
-        try {
+            try {
 
-            const response =
-                await fetch(
-                    "/api/cities",
-                    {
-                        method: "POST",
+                const response =
+                    await fetch(
+                        "/api/cities",
+                        {
+                            method: "POST",
 
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
 
-                        body: JSON.stringify({
-                            country: country
-                        })
+                            body: JSON.stringify({
+                                country: country
+                            })
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data ||
+                    !Array.isArray(data.cities) ||
+                    data.cities.length === 0
+                ) {
+
+                    throw new Error(
+                        "No cities found."
+                    );
+
+                }
+
+
+                citySelect.innerHTML = `
+                    <option value="">
+                        Select your city
+                    </option>
+                `;
+
+
+                data.cities.forEach(
+                    function (city) {
+
+                        const option =
+                            document.createElement(
+                                "option"
+                            );
+
+                        option.value = city;
+
+                        option.textContent = city;
+
+                        citySelect.appendChild(
+                            option
+                        );
+
                     }
                 );
 
 
-            const data =
-                await response.json();
+                citySelect.disabled = false;
 
 
-            if (
-                !response.ok ||
-                !data ||
-                !Array.isArray(data.cities) ||
-                data.cities.length === 0
-            ) {
+            } catch (error) {
 
-                throw new Error(
-                    "No cities found."
+                console.error(
+                    "CITY ERROR:",
+                    error
+                );
+
+
+                citySelect.innerHTML = `
+                    <option value="">
+                        Unable to load cities
+                    </option>
+                `;
+
+
+                cityError.textContent =
+                    "Unable to load cities right now.";
+
+                cityError.classList.remove(
+                    "hidden"
+                );
+
+
+            } finally {
+
+                cityLoading.classList.add(
+                    "hidden"
                 );
 
             }
 
-
-            citySelect.innerHTML = `
-                <option value="">
-                    Select your city
-                </option>
-            `;
-
-
-            data.cities.forEach(
-                function (city) {
-
-                    const option =
-                        document.createElement(
-                            "option"
-                        );
-
-                    option.value = city;
-
-                    option.textContent = city;
-
-                    citySelect.appendChild(
-                        option
-                    );
-
-                }
-            );
-
-
-            citySelect.disabled = false;
-
-
-        } catch (error) {
-
-            console.error(
-                "CITY ERROR:",
-                error
-            );
-
-            citySelect.innerHTML = `
-                <option value="">
-                    Unable to load cities
-                </option>
-            `;
-
-            cityError.textContent =
-                "Unable to load cities right now.";
-
-            cityError.classList.remove(
-                "hidden"
-            );
-
-        } finally {
-
-            cityLoading.classList.add(
-                "hidden"
-            );
-
         }
+    );
 
-    }
-);
 
     /* =========================================
        MAIN BUDGET BUTTON
@@ -1212,6 +1229,7 @@
                 document.getElementById(
                     "income"
                 ).value;
+
 
             const infants =
                 document.getElementById(
@@ -1311,18 +1329,23 @@
 
                                 family: {
 
-                                    infants: infants,
+                                    infants:
+                                        infants,
 
-                                    toddlers: toddlers,
+                                    toddlers:
+                                        toddlers,
 
-                                    kids: kids,
+                                    kids:
+                                        kids,
 
                                     teenagers:
                                         teenagers,
 
-                                    adults: adults,
+                                    adults:
+                                        adults,
 
-                                    seniors: seniors
+                                    seniors:
+                                        seniors
 
                                 },
 
@@ -1442,6 +1465,10 @@
             "";
 
 
+        /* =========================================
+           METRICS
+           ========================================= */
+
         metrics.innerHTML = "";
 
 
@@ -1484,6 +1511,10 @@
         }
 
 
+        /* =========================================
+           CATEGORIES
+           ========================================= */
+
         categories.innerHTML = "";
 
 
@@ -1493,66 +1524,103 @@
             data.spending;
 
 
-      if (
-    categoryData &&
-    typeof categoryData === "object" &&
-    !Array.isArray(categoryData)
-) {
-    Object.entries(categoryData).forEach(function ([name, percentage]) {
+        if (
+            categoryData &&
+            typeof categoryData === "object" &&
+            !Array.isArray(categoryData)
+        ) {
 
-        const category = document.createElement("div");
-        category.className = "category";
+            Object.entries(
+                categoryData
+            ).forEach(
+                function ([name, percentage]) {
 
-        const numericPercentage = Number(percentage) || 0;
+                    const category =
+                        document.createElement(
+                            "div"
+                        );
 
-        const recommendedBudget = Number(
-            data.total ||
-            data.recommended_budget ||
-            data.budget ||
-            0
-        );
+                    category.className =
+                        "category";
 
-        const amount =
-            recommendedBudget *
-            numericPercentage /
-            100;
 
-        category.innerHTML = `
-            <div class="category-top">
-                <div class="category-name">
-                    ${name}
-                </div>
+                    const numericPercentage =
+                        Number(
+                            percentage
+                        ) || 0;
 
-                <div class="percentage">
-                    ${numericPercentage}%
-                </div>
-            </div>
 
-            <div class="amount">
-                ${amount.toFixed(2)} ${data.currency || ""}
-            </div>
+                    const recommendedBudget =
+                        Number(
+                            data.total ||
+                            data.recommended_budget ||
+                            data.budget ||
+                            0
+                        );
 
-            <div class="bar">
-                <div
-                    class="bar-fill"
-                    style="width:${Math.min(
-                        100,
-                        Math.max(
-                            0,
-                            numericPercentage
-                        )
-                    )}%"
-                ></div>
-            </div>
-        `;
 
-        categories.appendChild(category);
-    }
-}
-            
+                    const amount =
+                        recommendedBudget *
+                        numericPercentage /
+                        100;
+
+
+                    category.innerHTML = `
+
+                        <div class="category-top">
+
+                            <div class="category-name">
+                                ${name}
+                            </div>
+
+                            <div class="percentage">
+                                ${numericPercentage}%
+                            </div>
+
+                        </div>
+
+
+                        <div class="amount">
+
+                            ${amount.toFixed(2)}
+                            ${data.currency || ""}
+
+                        </div>
+
+
+                        <div class="bar">
+
+                            <div
+                                class="bar-fill"
+                                style="
+                                    width:${Math.min(
+                                        100,
+                                        Math.max(
+                                            0,
+                                            numericPercentage
+                                        )
+                                    )}%;
+                                "
+                            ></div>
+
+                        </div>
+
+                    `;
+
+
+                    categories.appendChild(
+                        category
+                    );
+
+                }
+            );
 
         }
 
+
+        /* =========================================
+           AI ANALYSIS
+           ========================================= */
 
         analysis.innerHTML = "";
 
@@ -1588,10 +1656,18 @@
         }
 
 
+        /* =========================================
+           SOURCES
+           ========================================= */
+
         sources.textContent =
             data.sources ||
             "";
 
+
+        /* =========================================
+           SCROLL TO RESULTS
+           ========================================= */
 
         results.scrollIntoView({
             behavior: "smooth"
