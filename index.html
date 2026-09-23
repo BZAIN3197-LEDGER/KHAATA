@@ -1026,11 +1026,18 @@
     "change",
     async function () {
 
-        const country = this.value.trim();
+        const country =
+            this.value.trim();
 
         cityField.classList.remove("hidden");
 
         citySelect.disabled = true;
+
+        cityError.classList.add("hidden");
+
+        cityError.textContent = "";
+
+        cityLoading.classList.remove("hidden");
 
         citySelect.innerHTML = `
             <option value="">
@@ -1038,13 +1045,12 @@
             </option>
         `;
 
-        cityLoading.classList.remove("hidden");
-        cityError.classList.add("hidden");
-        cityError.textContent = "";
 
         if (!country) {
 
             cityField.classList.add("hidden");
+
+            cityLoading.classList.add("hidden");
 
             citySelect.innerHTML = `
                 <option value="">
@@ -1052,36 +1058,47 @@
                 </option>
             `;
 
-            cityLoading.classList.add("hidden");
-
             return;
         }
 
+
         try {
 
-            const response = await fetch(
-                "https://countriesnow.space/api/v0.1/countries/cities",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        country: country
-                    })
-                }
-            );
+            const response =
+                await fetch(
+                    "/api/cities",
+                    {
+                        method: "POST",
 
-            const data = await response.json();
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            country: country
+                        })
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
 
             if (
                 !response.ok ||
                 !data ||
-                !Array.isArray(data.data) ||
-                data.data.length === 0
+                !Array.isArray(data.cities) ||
+                data.cities.length === 0
             ) {
-                throw new Error("No cities found");
+
+                throw new Error(
+                    "No cities found."
+                );
+
             }
+
 
             citySelect.innerHTML = `
                 <option value="">
@@ -1089,45 +1106,60 @@
                 </option>
             `;
 
-            data.data.forEach(function (city) {
 
-                const option =
-                    document.createElement("option");
+            data.cities.forEach(
+                function (city) {
 
-                option.value = city;
-                option.textContent = city;
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
 
-                citySelect.appendChild(option);
+                    option.value = city;
 
-            });
+                    option.textContent = city;
+
+                    citySelect.appendChild(
+                        option
+                    );
+
+                }
+            );
+
 
             citySelect.disabled = false;
 
+
         } catch (error) {
 
-            console.error("CITY API ERROR:", error);
+            console.error(
+                "CITY ERROR:",
+                error
+            );
 
             citySelect.innerHTML = `
                 <option value="">
-                    City loading failed
+                    Unable to load cities
                 </option>
             `;
 
             cityError.textContent =
                 "Unable to load cities right now.";
 
-            cityError.classList.remove("hidden");
+            cityError.classList.remove(
+                "hidden"
+            );
 
         } finally {
 
-            cityLoading.classList.add("hidden");
+            cityLoading.classList.add(
+                "hidden"
+            );
 
         }
 
     }
 );
-);
-
 
     /* =========================================
        MAIN BUDGET BUTTON
