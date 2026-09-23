@@ -1502,81 +1502,62 @@
             data.spending;
 
 
-        if (Array.isArray(categoryData)) {
+      if (
+    categoryData &&
+    typeof categoryData === "object" &&
+    !Array.isArray(categoryData)
+) {
+    Object.entries(categoryData).forEach(function ([name, percentage]) {
 
-            categoryData.forEach(
-                function (item) {
+        const category = document.createElement("div");
+        category.className = "category";
 
-                    const category =
-                        document.createElement(
-                            "div"
-                        );
+        const numericPercentage = Number(percentage) || 0;
 
-                    category.className =
-                        "category";
+        const recommendedBudget = Number(
+            data.total ||
+            data.recommended_budget ||
+            data.budget ||
+            0
+        );
 
+        const amount =
+            recommendedBudget *
+            numericPercentage /
+            100;
 
-                    const name =
-                        item.name ||
-                        item.category ||
-                        "Category";
+        category.innerHTML = `
+            <div class="category-top">
+                <div class="category-name">
+                    ${name}
+                </div>
 
+                <div class="percentage">
+                    ${numericPercentage}%
+                </div>
+            </div>
 
-                    const amount =
-                        item.amount ||
-                        item.value ||
-                        0;
+            <div class="amount">
+                ${amount.toFixed(2)} ${data.currency || ""}
+            </div>
 
+            <div class="bar">
+                <div
+                    class="bar-fill"
+                    style="width:${Math.min(
+                        100,
+                        Math.max(
+                            0,
+                            numericPercentage
+                        )
+                    )}%"
+                ></div>
+            </div>
+        `;
 
-                    const percentage =
-                        item.percentage ||
-                        item.percent ||
-                        0;
-
-
-                    category.innerHTML = `
-
-                        <div class="category-top">
-
-                            <div class="category-name">
-                                ${name}
-                            </div>
-
-                            <div class="percentage">
-                                ${percentage}%
-                            </div>
-
-                        </div>
-
-                        <div class="amount">
-                            ${amount}
-                        </div>
-
-                        <div class="bar">
-
-                            <div
-                                class="bar-fill"
-                                style="width:${Math.min(
-                                    100,
-                                    Math.max(
-                                        0,
-                                        Number(
-                                            percentage
-                                        )
-                                    )
-                                )}%"
-                            ></div>
-
-                        </div>
-
-                    `;
-
-
-                    categories.appendChild(
-                        category
-                    );
-
-                }
+        categories.appendChild(category);
+    });
+}
             );
 
         }
