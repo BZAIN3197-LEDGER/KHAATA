@@ -689,25 +689,32 @@ textarea:focus {
             </div>
 
 
-            <!-- CITY -->
+             <!-- CITY -->
 
-            <div
-                class="field full hidden"
-                id="cityField"
-            >
+<div
+    class="field full hidden"
+    id="cityField"
+>
 
-                <label>
-                    City
-                    <span class="required">*</span>
-                </label>
+    <label for="city">
+        City
+        <span class="required">*</span>
+    </label>
 
-                <select id="city">
+    <select
+        id="city"
+        name="city"
+        required
+        disabled
+    >
 
-                    <option value="">
-                        Select your city
-                    </option>
+        <option value="">
+            Select a country first
+        </option>
 
-                </select>
+    </select>
+
+</div>
 
                 <div class="small" id="cityLoading">
                     Loading cities...
