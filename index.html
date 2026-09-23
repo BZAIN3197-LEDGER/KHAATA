@@ -361,7 +361,42 @@ textarea:focus {
     }
 
 }
+.main-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
 
+.main-nav a {
+    text-decoration: none;
+    color: #635bff;
+    background: white;
+    border: 1px solid #e5e7eb;
+    padding: 9px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.main-nav a:hover {
+    background: #f2f1ff;
+}
+
+.site-footer {
+    margin-top: 40px;
+    padding: 25px 0;
+    border-top: 1px solid #e5e7eb;
+    color: #667085;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.site-footer a {
+    color: #635bff;
+    text-decoration: none;
+    margin-right: 15px;
+}
 </style>
 </head>
 
@@ -372,17 +407,23 @@ textarea:focus {
 
     <!-- HEADER -->
 
-    <div class="header">
-
-        <div class="logo">
-            KHAATA
-        </div>
-
-        <div class="subtitle">
-            AI-powered personal budgeting
-        </div>
-
+  <div class="header">
+    <div class="logo">
+        KHAATA
     </div>
+
+    <div class="subtitle">
+        AI-powered personal budgeting
+    </div>
+
+    <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="how-it-works.html">How It Works</a>
+        <a href="guides.html">Budgeting Guides</a>
+        <a href="faq.html">FAQ</a>
+        <a href="about.html">About</a>
+    </nav>
+</div>
 
 
     <!-- CREATE BUDGET -->
