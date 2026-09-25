@@ -1676,9 +1676,15 @@ overviewContent.innerHTML =
    ========================================= */
 
 recommendationsContent.innerHTML =
-    data.recommendations ||
-    data.recommendation ||
-    "";
+    Array.isArray(data.recommendations)
+        ? `
+            <ul>
+                ${data.recommendations
+                    .map(item => `<li>${item}</li>`)
+                    .join("")}
+            </ul>
+          `
+        : data.recommendations || "";
 
         /* =========================================
            AI ANALYSIS
