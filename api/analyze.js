@@ -139,13 +139,12 @@ Use exactly this structure:
     "Shopping": 0,
     "Other": 0
   },
-  "economicSnapshot": "short explanation",
-  "tradeOffs": [
-    "trade-off 1",
-    "trade-off 2",
-    "trade-off 3"
-  ],
-  "insight": "short personalized recommendation",
+  "overview": "short explanation of the overall budget and financial situation",
+"recommendations": [
+    "recommendation 1",
+    "recommendation 2",
+    "recommendation 3"
+],
   "metrics": {
     "inflation": 0,
     "growth": 0,
