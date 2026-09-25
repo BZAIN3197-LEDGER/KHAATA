@@ -965,7 +965,31 @@
         <div
             class="analysis"
             id="analysis"
-        ></div>
+        ></div
+             <div
+    class="analysis"
+    id="overview"
+>
+    <div class="analysis-card">
+
+        <h3>Overview</h3>
+
+        <div id="overviewContent"></div>
+
+    </div>
+</div>
+        <div
+    class="analysis"
+    id="recommendations"
+>
+    <div class="analysis-card">
+
+        <h3>Recommendations</h3>
+
+        <div id="recommendationsContent"></div>
+
+    </div>
+</div>
 
 
         <div
@@ -1453,16 +1477,16 @@
             document.getElementById(
                 "analysis"
             );
-        const overview =
+        
+     const overviewContent =
     document.getElementById(
-        "overview"
+        "overviewContent"
     );
 
-const recommendations =
+const recommendationsContent =
     document.getElementById(
-        "recommendations"
+        "recommendationsContent"
     );
-
         const sources =
             document.getElementById(
                 "sources"
@@ -1642,48 +1666,19 @@ const recommendations =
    OVERVIEW
    ========================================= */
 
-if (overview) {
-
-    overview.innerHTML = "";
-
-    if (data.overview) {
-
-        overview.innerHTML = `
-            <div class="analysis-card">
-                <h3>Overview</h3>
-                <div>
-                    ${data.overview}
-                </div>
-            </div>
-        `;
-
-    }
-
-}
+overviewContent.innerHTML =
+    data.overview ||
+    "";
 
 
 /* =========================================
    RECOMMENDATIONS
    ========================================= */
 
-if (recommendations) {
-
-    recommendations.innerHTML = "";
-
-    if (data.recommendations) {
-
-        recommendations.innerHTML = `
-            <div class="analysis-card">
-                <h3>Recommendations</h3>
-                <div>
-                    ${data.recommendations}
-                </div>
-            </div>
-        `;
-
-    }
-
-}
+recommendationsContent.innerHTML =
+    data.recommendations ||
+    data.recommendation ||
+    "";
 
         /* =========================================
            AI ANALYSIS
