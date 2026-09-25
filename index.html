@@ -1453,6 +1453,15 @@
             document.getElementById(
                 "analysis"
             );
+        const overview =
+    document.getElementById(
+        "overview"
+    );
+
+const recommendations =
+    document.getElementById(
+        "recommendations"
+    );
 
         const sources =
             document.getElementById(
@@ -1503,8 +1512,8 @@
                     metric.innerHTML = `
 
                         <div class="metric-label">
-                            ${key}
-                        </div>
+    ${key.charAt(0).toUpperCase() + key.slice(1)}
+</div>
 
                         <div class="metric-value">
                             ${value}
@@ -1628,7 +1637,53 @@
             );
 
         }
+        
+/* =========================================
+   OVERVIEW
+   ========================================= */
 
+if (overview) {
+
+    overview.innerHTML = "";
+
+    if (data.overview) {
+
+        overview.innerHTML = `
+            <div class="analysis-card">
+                <h3>Overview</h3>
+                <div>
+                    ${data.overview}
+                </div>
+            </div>
+        `;
+
+    }
+
+}
+
+
+/* =========================================
+   RECOMMENDATIONS
+   ========================================= */
+
+if (recommendations) {
+
+    recommendations.innerHTML = "";
+
+    if (data.recommendations) {
+
+        recommendations.innerHTML = `
+            <div class="analysis-card">
+                <h3>Recommendations</h3>
+                <div>
+                    ${data.recommendations}
+                </div>
+            </div>
+        `;
+
+    }
+
+}
 
         /* =========================================
            AI ANALYSIS
