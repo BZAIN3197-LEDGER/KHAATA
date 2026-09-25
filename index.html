@@ -1249,7 +1249,8 @@
                 countrySelect.value;
 
             const city =
-                citySelect.value;
+    cityManual.value.trim() ||
+    citySelect.value;
 
             const start =
                 document.getElementById(
