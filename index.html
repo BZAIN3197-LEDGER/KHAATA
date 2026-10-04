@@ -358,6 +358,53 @@
             margin-right: 15px;
         }
 
+
+
+        /* Homepage content: useful even before a visitor runs the planner */
+        .hero {
+            background: linear-gradient(135deg, #ffffff 0%, #f0efff 100%);
+            border: 1px solid #e2e0ff;
+            border-radius: 22px;
+            padding: clamp(24px, 5vw, 48px);
+            margin: 8px 0 24px;
+        }
+        .eyebrow {
+            display: inline-block;
+            color: #5148e5;
+            background: #e9e7ff;
+            border-radius: 999px;
+            padding: 6px 11px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+        }
+        .hero h1 { font-size: clamp(30px, 5vw, 46px); line-height: 1.12; margin: 16px 0; max-width: 760px; }
+        .hero p { max-width: 760px; color: #475467; font-size: 17px; line-height: 1.75; }
+        .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+        .hero-button { display: inline-block; padding: 13px 18px; border-radius: 11px; background: #635bff; color: #fff; font-weight: 800; text-decoration: none; }
+        .hero-link { display: inline-block; padding: 13px 18px; border-radius: 11px; border: 1px solid #d0d5dd; background: #fff; color: #344054; font-weight: 700; text-decoration: none; }
+        .content-section { margin: 24px 0; }
+        .section-intro { max-width: 780px; color: #667085; line-height: 1.75; }
+        .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .info-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 15px; padding: 21px; }
+        .info-card h3 { margin: 0 0 9px; }
+        .info-card p { color: #475467; line-height: 1.7; margin-bottom: 0; }
+        .example-note { color: #667085; font-size: 13px; line-height: 1.6; }
+        .budget-table-wrap { overflow-x: auto; }
+        .budget-table { width: 100%; border-collapse: collapse; min-width: 420px; }
+        .budget-table th, .budget-table td { text-align: left; padding: 13px 12px; border-bottom: 1px solid #eaecf0; }
+        .budget-table th { background: #f8fafc; font-size: 13px; color: #475467; }
+        .budget-table td:last-child, .budget-table th:last-child { text-align: right; }
+        .budget-table tfoot td { font-weight: 800; border-top: 2px solid #d0d5dd; }
+        .insight-list { padding-left: 22px; line-height: 1.8; color: #344054; }
+        .faq-item { padding: 17px 0; border-bottom: 1px solid #eaecf0; }
+        .faq-item:last-child { border-bottom: 0; }
+        .faq-item h3 { font-size: 17px; margin: 0 0 8px; }
+        .faq-item p { color: #475467; line-height: 1.7; margin: 0; }
+        .disclaimer { background: #fffaeb; border: 1px solid #fedf89; border-radius: 12px; padding: 15px 17px; color: #7a2e0e; font-size: 13px; line-height: 1.65; }
+        @media (max-width: 700px) { .info-grid { grid-template-columns: 1fr; } .hero p { font-size: 16px; } }
+
         @media (max-width: 700px) {
 
             .grid,
@@ -423,9 +470,96 @@
     </div>
 
 
+
+
+    <!-- HOMEPAGE INTRODUCTION -->
+    <section class="hero" aria-labelledby="home-title">
+        <span class="eyebrow">Practical personal budgeting</span>
+        <h1 id="home-title">Make a budget that fits your real life.</h1>
+        <p>KHAATA helps individuals and families organize the money available for a budget period, think through essential costs, and plan for savings. Enter your location, available funds, household size, and priorities to generate a budget proposal you can review and adjust.</p>
+        <div class="hero-actions">
+            <a class="hero-button" href="#budget-planner">Create my budget</a>
+            <a class="hero-link" href="#sample-budget">Explore a worked example</a>
+        </div>
+        <p class="example-note">A planning aid, not a promise of local prices or a substitute for your own judgment. Review every estimate before relying on it.</p>
+    </section>
+
+    <section class="card content-section" aria-labelledby="how-khaata-helps">
+        <h2 id="how-khaata-helps">How KHAATA helps you plan</h2>
+        <p class="section-intro">A useful budget starts with the money actually available, gives necessary expenses first consideration, and makes trade-offs visible. KHAATA is designed to help you organize that process rather than assume every household should spend in the same proportions.</p>
+        <div class="info-grid">
+            <article class="info-card">
+                <h3>1. Describe your situation</h3>
+                <p>Choose a country and city, set the budget period and available amount, and enter the household members included in the plan.</p>
+            </article>
+            <article class="info-card">
+                <h3>2. Review the proposed plan</h3>
+                <p>Examine the suggested spending categories, amounts, and explanations. Treat estimates as a starting point and compare them with your real bills and local costs.</p>
+            </article>
+            <article class="info-card">
+                <h3>3. Adjust priorities</h3>
+                <p>Consider essential food, housing, utilities, transport, education and healthcare before flexible spending. Include emergency savings when your circumstances allow.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="card content-section" id="sample-budget" aria-labelledby="sample-budget-title">
+        <h2 id="sample-budget-title">Worked example: planning a monthly budget of PKR 80,000</h2>
+        <p class="section-intro">This fictional example shows how a household might organize a fixed monthly amount. It is an illustration of budgeting arithmetic, not a claim about current prices or a recommendation that every family use these exact amounts.</p>
+        <div class="budget-table-wrap">
+            <table class="budget-table">
+                <thead><tr><th scope="col">Category</th><th scope="col">Example allocation</th><th scope="col">Share</th></tr></thead>
+                <tbody>
+                    <tr><td>Food and household essentials</td><td>PKR 24,000</td><td>30%</td></tr>
+                    <tr><td>Housing and utilities</td><td>PKR 20,000</td><td>25%</td></tr>
+                    <tr><td>Transport</td><td>PKR 8,000</td><td>10%</td></tr>
+                    <tr><td>Education and healthcare</td><td>PKR 8,000</td><td>10%</td></tr>
+                    <tr><td>Emergency fund</td><td>PKR 8,000</td><td>10%</td></tr>
+                    <tr><td>Other savings or planned goals</td><td>PKR 8,000</td><td>10%</td></tr>
+                    <tr><td>Flexible and personal spending</td><td>PKR 4,000</td><td>5%</td></tr>
+                </tbody>
+                <tfoot><tr><td>Total planned</td><td>PKR 80,000</td><td>100%</td></tr></tfoot>
+            </table>
+        </div>
+        <p class="example-note">Calculation: PKR 24,000 ÷ PKR 80,000 = 30%. The other percentages use the same method. The allocations total PKR 80,000, so this example leaves no unassigned balance.</p>
+        <div class="disclaimer"><strong>Important:</strong> Real costs differ by city, household size, rent arrangements, health needs, debt and other obligations. If essential bills already exceed the available amount, reduce or remove flexible categories first and reassess the plan instead of assuming the example will fit.</div>
+    </section>
+
+    <section class="card content-section" aria-labelledby="budget-principles">
+        <h2 id="budget-principles">Four principles for a more realistic budget</h2>
+        <ol class="insight-list">
+            <li><strong>Start with actual obligations.</strong> Use rent, utility bills, school fees, transport costs, debt payments and other known commitments where available instead of relying entirely on generic percentages.</li>
+            <li><strong>Separate needs from flexible spending.</strong> Essential costs vary between households. Review the consequences before cutting food, medicine, education or other necessary expenses.</li>
+            <li><strong>Make room for irregular expenses.</strong> Annual fees, repairs, medical costs and seasonal bills can disrupt a monthly plan. Estimate them and set aside money over time where possible.</li>
+            <li><strong>Review and update.</strong> Compare planned amounts with actual spending at the end of the period. Change the next budget when prices, income or household needs change.</li>
+        </ol>
+        <p>For more detailed explanations and examples, visit the <a href="guides.html">KHAATA Budgeting Guides</a> and <a href="how-it-works.html">How It Works</a> pages.</p>
+    </section>
+
+    <section class="card content-section" aria-labelledby="home-faq-title">
+        <h2 id="home-faq-title">Frequently asked budgeting questions</h2>
+        <div class="faq-item">
+            <h3>Does KHAATA guarantee that the budget will match local prices?</h3>
+            <p>No. A generated plan is an estimate and may not reflect every current price or personal obligation. Check important amounts against your bills, local providers and other reliable information.</p>
+        </div>
+        <div class="faq-item">
+            <h3>What if my essential expenses are higher than my available money?</h3>
+            <p>The budget should make the shortfall visible rather than hide it. Review flexible spending, identify any safe adjustments, and consider trusted local assistance or qualified advice if essential needs cannot be covered.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Should every household use the same spending percentages?</h3>
+            <p>No. A percentage-based example can help explain a budget, but rent, family size, income stability, health needs, location and existing obligations all affect a realistic allocation.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Is KHAATA a financial adviser?</h3>
+            <p>No. KHAATA is a budgeting aid. Its output can contain errors and should not replace professional financial, legal, tax or debt advice when that advice is needed.</p>
+        </div>
+    </section>
+
+
     <!-- CREATE BUDGET -->
 
-    <div class="card">
+    <div class="card" id="budget-planner">
 
         <h2>
             Create Your Budget
@@ -962,8 +1096,8 @@
         <div
             class="analysis"
             id="analysis"
-        ></div
-             <div
+        ></div>
+        <div
     class="analysis"
     id="overview"
 >
@@ -1026,6 +1160,14 @@
 
         <a href="about.html">
             About
+        </a>
+
+        <a href="privacy.html">
+            Privacy Policy
+        </a>
+
+        <a href="terms.html">
+            Terms of Use
         </a>
 
     </footer>
