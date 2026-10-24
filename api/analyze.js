@@ -118,13 +118,15 @@ async function fetchWorldBankCountryDirectory() {
                 );
             }
 
+        
             return payload[1].filter(
                 item =>
                     item &&
                     item.name &&
-                    item.iso3Code &&
+                    item.id &&
                     item.region?.id !== "NA"
             );
+
         })().catch(error => {
             countryDirectoryCache = null;
             throw error;
@@ -152,7 +154,9 @@ async function getWorldBankCountryCode(country) {
                 normalizeCountryName(item.name) === target
         );
 
-        return match ? match.iso3Code : null;
+        
+        return match ? match.id : null;
+
     } catch (error) {
         console.error(
             "World Bank country lookup unavailable:",
